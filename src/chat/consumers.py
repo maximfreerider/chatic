@@ -1,17 +1,16 @@
-from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.generic.websocket import WebsocketConsumer
 import json
 
-class ChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        await self.accept()
-        await self.accept("subprotocol")
+class ChatComsumer(WebsocketConsumer):
+    def connect(self):
+        self.accept()
 
-    async reciever(self, text_data = None, bytes_data = None):
-        await self.send(text_data="Hello from channels")
-        await self.send(bytes_data="Hello from Channels")
+    def disconnect(self, code):
+        pass
 
-    async def disconnect(self):
-        await self.close()
-
-
-        
+    def receive(self, text_data=None, bytes_data=None):
+        json_data = json.loads(text_data)
+        message = json_data['message']
+        self.send(text_data=json.dumps({
+            'message': message,
+        }))
