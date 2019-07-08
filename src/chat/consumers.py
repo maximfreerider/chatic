@@ -12,5 +12,5 @@ class ChatComsumer(WebsocketConsumer):
         json_data = json.loads(text_data)
         message = json_data['message']
         self.send(text_data=json.dumps({
-            'message': message,
+            'message': "hello from backend!!!"
         }))
